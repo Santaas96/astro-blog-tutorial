@@ -1,0 +1,33 @@
+---
+import { Image } from "@astrojs/image/components";
+import Link from "./Link.astro";
+
+const { frontmatter, url } = Astro.props;
+
+const { publishDate, title, heroImage } = frontmatter;
+---
+
+<article class="card">
+  <a class="badge a">{publishDate}</a>
+
+  <div class="content">
+    <a href={url}
+      ><Image
+        src={heroImage}
+        alt=""
+        width={400}
+        height={250}
+        format="avif"
+        fit="cover"
+      /></a
+    >
+    <h1 class="h2"><a href={url}>{title}</a></h1>
+  </div>
+  <Link href={url} text="Ver mas" style='primary' borderVisible={true}/>
+</article>
+
+<style>
+  .a{
+    margin-bottom: 1rem;
+  }
+</style>

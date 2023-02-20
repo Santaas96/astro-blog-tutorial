@@ -1,0 +1,26 @@
+---
+import MainLayout from "./MainLayout.astro";
+import { Image } from "@astrojs/image/components";
+import PostHeader from "../components/PostHeader.astro";
+
+const { content } = Astro.props;
+
+const { title, description, heroImage, author, authorURL, publishDate } =
+  content;
+---
+
+<MainLayout
+  title={title}
+  description={description}
+  image={heroImage}
+  frontmatter={content}
+  robots={content.robots}
+>
+  <PostHeader {publishDate} {heroImage} {title} />
+  <div class="post-content">
+    <div class="content">
+      <slot />
+      <div class="sidebar"></div>
+    </div>
+  </div>
+</MainLayout>

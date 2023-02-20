@@ -1,0 +1,41 @@
+---
+import AuthorCloud from "../../components/AuthorCloud.astro";
+import Pagination from "../../components/Pagination.astro";
+import PostCard from "../../components/PostCard.astro";
+import { formatBlogPosts } from "../../js/utils";
+import MainLayout from "../../layouts/MainLayout.astro";
+
+export async function getStaticPaths({ paginate }) {
+  const allPosts = await Astro.glob("./*.md");
+  const formattedPosts = formatBlogPosts(allPosts);
+
+  return paginate(formattedPosts, { pageSize: 3 });
+}
+
+const { page } = Astro.props;
+---
+
+<MainLayout title="My blog">
+  <section class="container" aria-label="New Blog Posts">
+    <h1 class="h1">New Blog Posts</h1>
+    <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
+    <div class="post-container">
+      {
+        page.data.map((post) => (
+          <PostCard frontmatter={post.frontmatter} url={post.url} />
+        ))
+      }
+    </div>
+    <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
+  </section>
+  <aside class="container" aria-label='Blog categories'>
+    <h2 class="h3">Blog Authors</h2>
+    <AuthorCloud showCount={true}/>
+  </aside>
+</MainLayout>
+
+<style>
+  h1{
+    margin-bottom: 1.5rem;
+  }
+</style>

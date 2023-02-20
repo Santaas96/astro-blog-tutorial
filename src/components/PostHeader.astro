@@ -1,0 +1,13 @@
+---
+import { Image } from '@astrojs/image/components'
+
+const {publishDate, heroImage, title} = Astro.props
+---
+
+<header>
+  <div class="container">
+    <span class="badge">{publishDate}</span>
+    <h1 class="h2">{title}</h1>
+  </div>
+  <Image src={heroImage} alt="" width={1200} height={600} format='avif' fit='cover' class="hero-image"/>
+</header>

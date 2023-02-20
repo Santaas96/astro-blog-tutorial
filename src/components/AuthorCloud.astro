@@ -1,0 +1,35 @@
+---
+import { formatBlogPosts, slugify } from "../js/utils";
+import Link from "./Link.astro";
+
+const allPosts = await Astro.glob("../pages/blog/*.md");
+const formattedPosts = formatBlogPosts(allPosts);
+const allAuthors = formattedPosts
+  .map((author) => author.frontmatter.author.toLowerCase())
+  .flat();
+
+const processedAuthors = allAuthors.reduce((acc, author) => {
+  const value = acc[author] || 0;
+
+  return {
+    ...acc,
+    [author]: value + 1,
+  };
+}, {});
+
+const { showCount } = Astro.props;
+---
+
+<ul class="categories">
+  {
+    Object.entries(processedAuthors).map(([key, val]) => {
+      return (
+        <li>
+          <a class="badge" href={`/author/${slugify(key)}/1`}>
+            {key} {showCount && `(${val})`}
+          </a>
+        </li>
+      );
+    })
+  }
+</ul>
